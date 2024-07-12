@@ -20,7 +20,13 @@ function create_post() {
     }),
   })
     .then((res) => res.json())
-    .then((data) => console.log(data.message));
+    .then((data) => {
+      console.log(data.message);
+      title = "";
+      body = "";
+      document.querySelector("#open-create-form").className = "d-block";
+      document.querySelector("#create-post-form").className = "d-none";
+    });
 
   return false;
 }
