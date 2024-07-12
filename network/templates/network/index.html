@@ -1,18 +1,35 @@
-{% extends "network/layout.html" %} {% block body %}
+{% extends "network/layout.html" %} {% load static %} {% block body %}
 <div class="container">
-  <button class="btn btn-primary">
-    <a href="{% url 'create_post' %}">Create A New Post</a>
-  </button>
-
-  <div>
-    {% for post in posts %}
-    <div class="border-secondary">
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.body }}</p>
-      <p>{{ post.user }}</p>
-      <p>{{ post.created_at }}</p>
-    </div>
-    {% endfor %}
+  <div id="create-post-form" class="d-none">
+    <form id="create-form">
+      <label for="title" class="form-label mt-3">Title:</label>
+      <input type="text" id="title" name="title" class="form-control" />
+      <label for="body" class="form-label mt-3">Content:</label>
+      <textarea
+        type="text"
+        id="body"
+        name="body"
+        class="form-control"
+        rows="4"
+      ></textarea>
+      <input
+        type="submit"
+        value="Create"
+        class="btn btn-outline-primary mt-3"
+      />
+    </form>
   </div>
+  <button id="open-create-form">Create Post</button>
+
+  {% for post in posts %}
+  <div class="border-secondary">
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.body }}</p>
+    <p>{{ post.user }}</p>
+    <p>{{ post.created_at }}</p>
+  </div>
+  {% endfor %}
 </div>
-{% endblock %}
+{% block script %}
+<script src="{% static 'network/index.js' %}"></script>
+{% endblock %} {% endblock %}
