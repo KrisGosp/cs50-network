@@ -11,4 +11,16 @@ function open_create_form() {
 function create_post() {
   title = document.querySelector("#title").value;
   body = document.querySelector("#body").value;
+
+  fetch("/create_post", {
+    method: "POST",
+    body: JSON.stringify({
+      title: title,
+      body: body,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data.message));
+
+  return false;
 }

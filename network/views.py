@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+import json
 
 from .models import User, Post
 
@@ -64,18 +67,17 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-
+@csrf_exempt
+@login_required
 def create_post(request):
     if request.method == "POST":
-        title = request.POST["title"]
-        body = request.POST["body"]
+        data = json.loads(request.body)
+        title = data["title"]
+        body = data["body"]
         user = request.user
-
         new_post = Post.objects.create(title=title, body=body, user=user)
         new_post.save()
 
-        return render(request, "network/index.html", {
-            "posts": Post.objects.all()
-        })
+        return JsonResponse({'message': 'Post created successfully'}, status=201)
 
     return render(request, "network/create_post.html")
