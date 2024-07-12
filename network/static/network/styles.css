@@ -1,0 +1,7 @@
+a {
+  color: wheat;
+}
+a:hover {
+  text-decoration: none;
+  color: white;
+}
