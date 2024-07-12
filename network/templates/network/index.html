@@ -3,5 +3,16 @@
   <button class="btn btn-primary">
     <a href="{% url 'create_post' %}">Create A New Post</a>
   </button>
+
+  <div>
+    {% for post in posts %}
+    <div class="border-secondary">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.body }}</p>
+      <p>{{ post.user }}</p>
+      <p>{{ post.created_at }}</p>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

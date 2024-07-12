@@ -8,7 +8,9 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {
+        "posts": Post.objects.all()
+    })
 
 
 def login_view(request):
@@ -71,6 +73,9 @@ def create_post(request):
 
         new_post = Post.objects.create(title=title, body=body, user=user)
         new_post.save()
-        return HttpResponseRedirect(reverse("index"))
+
+        return render(request, "network/index.html", {
+            "posts": Post.objects.all()
+        })
 
     return render(request, "network/create_post.html")
