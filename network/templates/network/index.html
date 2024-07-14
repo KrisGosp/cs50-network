@@ -1,6 +1,9 @@
 {% extends "network/layout.html" %} {% load static %} {% block body %}
 <div class="container">
+  <!-- Alert  -->
   <div class="alert alert-primary my-3 d-none" role="alert"></div>
+
+  <!-- Post Form -->
   <div id="create-post-form" class="d-none">
     <form id="create-form">
       <label for="title" class="form-label mt-3">Title:</label>
@@ -23,11 +26,21 @@
   <button id="open-create-form">Create Post</button>
 
   {% for post in posts %}
-  <div class="border-secondary">
+  <div class="post">
+    <p>{{ post.user }}</p>
     <h3>{{ post.title }}</h3>
     <p>{{ post.body }}</p>
-    <p>{{ post.user }}</p>
-    <p>{{ post.created_at }}</p>
+
+    <div class="d-flex justify-content-between">
+      <span>Likes: {{ post.likes }}</span>
+      <span>{{ post.created_at }}</span>
+    </div>
+    <input
+      type="text"
+      name="comment"
+      id="comment"
+      placeholder="Add a comment..."
+    />
   </div>
   {% endfor %}
 </div>
