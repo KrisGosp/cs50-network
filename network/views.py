@@ -80,4 +80,14 @@ def create_post(request):
 
         return JsonResponse({'message': 'Post created successfully'}, status=201)
 
-    return render(request, "network/create_post.html")
+    return JsonResponse({'message': 'Route can only be accessed via POST'}, status=400)
+
+@login_required
+def profile(request, username):
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(user=user)
+
+    return render(request, "network/profile.html", {
+        "user": user,
+        "posts": posts
+    })
