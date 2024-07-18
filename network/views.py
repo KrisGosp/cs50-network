@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
 
-from .models import User, Post
+from .models import User, Post, Following
 
 
 def index(request):
@@ -87,7 +87,10 @@ def profile(request, username):
     user = User.objects.get(username=username)
     posts = Post.objects.filter(user=user)
 
+    # users_following = Following.objects.filter(user=user)
+
     return render(request, "network/profile.html", {
         "user": user,
-        "posts": posts
+        "posts": posts,
+
     })
