@@ -82,15 +82,17 @@ def create_post(request):
 
     return JsonResponse({'message': 'Route can only be accessed via POST'}, status=400)
 
-@login_required
-def profile(request, username):
-    user = User.objects.get(username=username)
-    posts = Post.objects.filter(user=user)
+# @login_required
+# def profile(request, user_id):
+#     user = User.objects.get(id=user_id)
+#     posts = Post.objects.filter(user=user).order_by("-created_at")
 
-    # users_following = Following.objects.filter(user=user)
+#     user_following = Following.objects.filter(user=user).count()
+#     user_followed = Following.objects.filter(followed=user).count()
 
-    return render(request, "network/profile.html", {
-        "user": user,
-        "posts": posts,
-
-    })
+#     return render(request, "network/profile.html", {
+#         "user": user,
+#         "posts": posts,
+#         "following": user_following,
+#         "followers": user_followed
+#     })
