@@ -27,7 +27,9 @@
 
   {% for post in posts %}
   <div class="post">
-    <p>{{ post.user }}</p>
+    <a href="{% url 'profile' post.user.id %}">
+      <p>{{ post.user }}</p>
+    </a>
     <h3>{{ post.title }}</h3>
     <p>{{ post.body }}</p>
 
