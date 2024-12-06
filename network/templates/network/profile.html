@@ -10,13 +10,18 @@
   <div class="f">Following: {{ following }}</div>
   <div class="f">Followers: {{ followers }}</div>
 
+  <!-- if it is not own profile then show form to submit follow/unfollow -->
   {% if not is_own_profile %}
-    {% if followed %}
-      <button id="unfollow">Unfollow</button>
-    {% else %}
-      <button id="follow">Follow</button>
-    {% endif %}
-  {% endif %}
+    <form method="post" action="{% url 'toggle_follow' %}">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        {% if followed %}
+            <button type="submit">Unfollow</button>
+        {% else %}
+            <button type="submit">Follow</button>
+        {% endif %}
+    </form>
+{% endif %}
 
   {% for post in posts %}
   <div class="post">

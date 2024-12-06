@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -104,3 +104,23 @@ def profile(request, user_id):
         "followed": followed,
         "is_own_profile": is_own_profile
     })
+
+
+@login_required
+def toggle_follow(request):
+    if request.method == "POST":
+        user_id = request.POST["user_id"]
+
+        user = User.objects.get(id=user_id)
+
+        # toggle the follow value in Following table
+        followed = Following.objects.filter(user=request.user, followed=user).exists()
+        if followed:
+            Following.objects.filter(user=request.user, followed=user).delete()
+        else:
+            new_follow = Following.objects.create(user=request.user, followed=user)
+            new_follow.save()
+
+        return redirect('profile', user_id=user_id)
+
+    return JsonResponse({'message': 'Route can only be accessed via POST'}, status=400)
