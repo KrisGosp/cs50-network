@@ -1,4 +1,6 @@
-{% extends "network/layout.html" %} {% load static %} {% block body %}
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
 <div class="container">
   <!-- Alert  -->
   <!-- <div class="alert alert-primary my-3 d-none" role="alert"></div> -->
@@ -8,10 +10,18 @@
   <div class="f">Following: {{ following }}</div>
   <div class="f">Followers: {{ followers }}</div>
 
+  {% if not is_own_profile %}
+    {% if followed %}
+      <button id="unfollow">Unfollow</button>
+    {% else %}
+      <button id="follow">Follow</button>
+    {% endif %}
+  {% endif %}
+
   {% for post in posts %}
   <div class="post">
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.body }}</p>
+    <h4>{{ post.title }}</h4>
+    <p>{{ post.content }}</p>
     <div class="d-flex justify-content-between">
       <span>Likes: {{ post.likes }}</span>
       <span>{{ post.created_at }}</span>
@@ -25,6 +35,8 @@
   </div>
   {% endfor %}
 </div>
+{% endblock %}
+
 {% block script %}
 <script src="{% static 'network/index.js' %}"></script>
-{% endblock %} {% endblock %}
+{% endblock %}

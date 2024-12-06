@@ -90,9 +90,17 @@ def profile(request, user_id):
     user_following = Following.objects.filter(user=user).count()
     user_followed = Following.objects.filter(followed=user).count()
 
+# check whether user is followed
+    followed = Following.objects.filter(user=request.user, followed=user).exists()
+
+# check if this user is visiting their account
+    is_own_profile = user_id == request.user.id
+
     return render(request, "network/profile.html", {
         "user": user,
         "posts": posts,
         "following": user_following,
-        "followers": user_followed
+        "followers": user_followed,
+        "followed": followed,
+        "is_own_profile": is_own_profile
     })

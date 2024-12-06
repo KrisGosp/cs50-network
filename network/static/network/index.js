@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#open-create-form").onclick = toggle_create_form;
-  document.querySelector("#create-form").onsubmit = create_post;
+  if (document.querySelector("#open-create-form") && document.querySelector("#create-form")) {
+    document.querySelector("#open-create-form").onclick = toggle_create_form;
+    document.querySelector("#create-form").onsubmit = create_post;
+    }
 });
 
 function toggle_create_form() {
