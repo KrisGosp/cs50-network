@@ -15,6 +15,16 @@ def index(request):
         "posts": Post.objects.all()
     })
 
+def following(request):
+    # get users that currUser follows
+    following_users = request.user.following.values_list('followed', flat=True)
+
+    # get posts from users that currUser follows
+    following_posts = Post.objects.filter(user__in=following_users).order_by("-created_at")
+
+    return render(request, "network/following.html", {
+        "following": following_posts
+    })
 
 def login_view(request):
     if request.method == "POST":
