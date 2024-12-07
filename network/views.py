@@ -5,16 +5,25 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 import json
 
 from .models import User, Post, Following
 
 
 def index(request):
+    posts = Post.objects.all().order_by("-created_at")
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+
     return render(request, "network/index.html", {
-        "posts": Post.objects.all()
+        "page_obj": page_obj
     })
 
+@login_required
 def following(request):
     # get users that currUser follows
     following_users = request.user.following.values_list('followed', flat=True)

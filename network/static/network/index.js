@@ -13,12 +13,12 @@ function toggle_create_form() {
 }
 
 function alert(message, type = "primary") {
-  alert = document.querySelector(".alert");
-  alert.innerHTML = message;
-  alert.classList.remove("d-none");
-  alert.classList.add(`alert-${type}`);
+  element = document.querySelector(".alert");
+  element.innerHTML = message;
+  element.classList.remove("d-none");
+  element.classList.add(`alert-${type}`);
   setTimeout(function () {
-    alert.classList.add("d-none");
+    element.classList.add("d-none");
   }, 3000);
 }
 
