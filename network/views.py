@@ -104,6 +104,20 @@ def create_post(request):
 
     return JsonResponse({'message': 'Route can only be accessed via POST'}, status=400)
 
+@csrf_exempt
+@login_required
+def edit_post(request, post_id):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        body = data["body"]
+        post = Post.objects.get(id=post_id)
+        post.body = body
+        post.save()
+
+        return JsonResponse({'message': 'Post edited successfully'}, status=201)
+
+    return JsonResponse({'message': 'Route can only be accessed via PUT'}, status=400)
+
 @login_required
 def profile(request, user_id):
     user = User.objects.get(id=user_id)

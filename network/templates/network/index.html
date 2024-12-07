@@ -28,11 +28,15 @@
 
 <!-- Paginator -->
 {% for post in page_obj %}
-  <div class="post">
+  <div class="post" data-post-id="{{ post.id }}">
     <a href="{% url 'profile' post.user.id %}">
       <p>{{ post.user }}</p>
     </a>
-    <p>{{ post.body }}</p>
+
+    <div class="new-body d-none">
+      <textarea name="new-body" id="new-body-{{ post.id }}">{{ post.body }}</textarea>
+    </div>
+    <p class="post-body post-body-{{ post.id }}">{{ post.body }}</p>
     <div class="d-flex justify-content-between">
       <span>Likes: {{ post.likes }}</span>
       <span>{{ post.created_at }}</span>
@@ -40,6 +44,7 @@
 
     {% if post.user == request.user %}
     <button class="btn btn-sm btn-outline-primary edit-post">Edit</button>
+    <button class="btn btn-sm btn-outline-primary save-new-post d-none">Save</button>
     {% endif %}
   </div>
 {% endfor %}
