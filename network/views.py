@@ -28,11 +28,15 @@ def following(request):
     # get users that currUser follows
     following_users = request.user.following.values_list('followed', flat=True)
 
-    # get posts from users that currUser follows
-    following_posts = Post.objects.filter(user__in=following_users).order_by("-created_at")
+    # get posts from users that currUser follows + Paginator
+    posts = Post.objects.filter(user__in=following_users).order_by("-created_at")
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/following.html", {
-        "following": following_posts
+        "page_obj": page_obj
     })
 
 def login_view(request):
@@ -105,7 +109,7 @@ def create_post(request):
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
 
-# TODO: Paginator
+# Paginator
     posts = Post.objects.all().order_by("-created_at")
     paginator = Paginator(posts, 10)
 
