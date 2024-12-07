@@ -104,8 +104,15 @@ def create_post(request):
 @login_required
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
-    posts = Post.objects.filter(user=user).order_by("-created_at")
 
+# TODO: Paginator
+    posts = Post.objects.all().order_by("-created_at")
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+# following
     user_following = Following.objects.filter(user=user).count()
     user_followed = Following.objects.filter(followed=user).count()
 
@@ -117,7 +124,7 @@ def profile(request, user_id):
 
     return render(request, "network/profile.html", {
         "user": user,
-        "posts": posts,
+        "page_obj": page_obj,
         "following": user_following,
         "followers": user_followed,
         "followed": followed,
