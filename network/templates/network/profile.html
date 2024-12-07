@@ -34,7 +34,7 @@
     <span>{{ post.created_at }}</span>
   </div>
 
-  {% if post.user == request.user %}
+  {% if is_own_profile %}
   <button class="btn btn-sm btn-outline-primary edit-post">Edit</button>
   {% endif %}
 </div>

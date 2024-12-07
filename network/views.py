@@ -109,7 +109,7 @@ def profile(request, user_id):
     user = User.objects.get(id=user_id)
 
 # Paginator
-    posts = Post.objects.all().order_by("-created_at")
+    posts = Post.objects.filter(user=user).order_by("-created_at")
     paginator = Paginator(posts, 10)
 
     page_number = request.GET.get('page')
@@ -123,7 +123,7 @@ def profile(request, user_id):
     followed = Following.objects.filter(user=request.user, followed=user).exists()
 
 # check if this user is visiting their account
-    is_own_profile = user_id == request.user.id
+    is_own_profile = int(user_id) == int(request.user.id)
 
     return render(request, "network/profile.html", {
         "user": user,
