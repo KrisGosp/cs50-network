@@ -28,8 +28,7 @@
   <a href="{% url 'profile' post.user.id %}">
     <p>{{ post.user }}</p>
   </a>
-  <h3>{{ post.title }}</h3>
-  <p>{{ post.content }}</p>
+  <p>{{ post.body }}</p>
   <div class="d-flex justify-content-between">
     <span>Likes: {{ post.likes }}</span>
     <span>{{ post.created_at }}</span>

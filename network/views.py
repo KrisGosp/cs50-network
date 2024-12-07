@@ -95,10 +95,9 @@ def register(request):
 def create_post(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        title = data["title"]
         body = data["body"]
         user = request.user
-        new_post = Post.objects.create(title=title, body=body, user=user)
+        new_post = Post.objects.create(body=body, user=user)
         new_post.save()
 
         return JsonResponse({'message': 'Post created successfully'}, status=201)

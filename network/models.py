@@ -7,7 +7,6 @@ class User(AbstractUser):
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    title = models.TextField(max_length=128)
     body = models.TextField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)

@@ -8,8 +8,6 @@
   <!-- Post Form -->
   <div id="create-post-form" class="d-none">
     <form id="create-form">
-      <label for="title" class="form-label mt-3">Title:</label>
-      <input type="text" id="title" name="title" class="form-control" />
       <label for="body" class="form-label mt-3">Content:</label>
       <textarea
         type="text"
@@ -34,8 +32,7 @@
     <a href="{% url 'profile' post.user.id %}">
       <p>{{ post.user }}</p>
     </a>
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.content }}</p>
+    <p>{{ post.body }}</p>
     <div class="d-flex justify-content-between">
       <span>Likes: {{ post.likes }}</span>
       <span>{{ post.created_at }}</span>
