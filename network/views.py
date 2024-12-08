@@ -18,9 +18,14 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # take ids of all posts that currUser has liked
+    # TODO: Check if working
+    # liked_posts = request.user.user_liked.values_list('post', flat=True)
+
 
     return render(request, "network/index.html", {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        # "liked_posts": liked_posts
     })
 
 @login_required
