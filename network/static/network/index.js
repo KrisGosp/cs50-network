@@ -126,13 +126,12 @@ const like_post = (event) => {
     alert(data.message, "success");
 
 
-    // TODO: update DOM
     //update count
     const likes = event.target.closest(".post").getAttribute("data-post-likes");
     event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) + 1;
 
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
-    document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
+    document.querySelector(`.liked-${postId_like}`).classList.toggle("d-none");
 
 
   })
