@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
 let postId = null;
 let postDiv = null;
 
+let isLikeCountChanged = false;
+
 // toggling the form
 function toggle_create_form() {
   document.querySelector("#create-post-form").classList.toggle("d-block");
@@ -124,19 +126,22 @@ const like_post = (event) => {
   .then((res) => res.json())
   .then((data) => {
     alert(data.message, "success");
-
-
+    
+    
     //update count
-    const likes = event.target.closest(".post").getAttribute("data-post-likes");
-    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) + 1;
-
+    let likes = event.target.closest(".post").getAttribute("data-post-likes");
+    likes = !isLikeCountChanged ? parseInt(likes) + 1 : parseInt(likes);
+    console.log(likes, isLikeCountChanged);
+    event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
+    
     // toggle the like/unlike icons
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
     document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
 
-    // after liking, attach on click again
-    // document.querySelector(`.unlike-post-${postId_like}`).onclick = unlike_post;
+    // toggle isLikeCountChanged
+    isLikeCountChanged = !isLikeCountChanged;
   })
+
 }
 
 
@@ -152,10 +157,16 @@ const unlike_post = (event) => {
     alert(data.message, "success");
 
     //update count
-    const likes = event.target.closest(".post").getAttribute("data-post-likes");
-    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes);
+    let likes = event.target.closest(".post").getAttribute("data-post-likes");
+    likes = !isLikeCountChanged ? parseInt(likes) - 1 : parseInt(likes);
+    console.log(likes, isLikeCountChanged);
+    event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
 
     document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
+    
+    // toggle isLikeCountChanged
+    isLikeCountChanged = !isLikeCountChanged;
   })
+
 }
