@@ -188,6 +188,7 @@ def like_post(request, post_id):
         return JsonResponse({'message': 'Post liked successfully'}, status=201)
     return JsonResponse({'message': 'Route can only be accessed via PUT'}, status=400)
 
+@csrf_exempt
 @login_required
 def unlike_post(request, post_id):
     if request.method == "PUT":

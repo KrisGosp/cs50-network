@@ -132,9 +132,26 @@ const like_post = (event) => {
 
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
     document.querySelector(`.liked-${postId_like}`).classList.toggle("d-none");
-
-
   })
 }
-// TODO: 
-const unlike_post = (event) => {}
+
+
+const unlike_post = (event) => {
+  const postId_like = event.target.closest(".post").getAttribute("data-post-id");
+
+  // send a PUT req with postId to update likes db
+  fetch(`/unlike_post/${postId_like}`, {
+    method: "PUT",
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    alert(data.message, "success");
+
+    //update count
+    const likes = event.target.closest(".post").getAttribute("data-post-likes");
+    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) - 1;
+
+    document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
+    document.querySelector(`.unliked-${postId_like}`).classList.toggle("d-none");
+  })
+}
