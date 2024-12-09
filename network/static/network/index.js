@@ -15,10 +15,19 @@ document.addEventListener("DOMContentLoaded", function () {
       button.onclick = save_new_post;
     });
   }
+
+  // attach onclick to like/unlike buttons
+  document.querySelectorAll(".like-post").forEach(button => {
+    button.onclick = like_post;
+  });
+  document.querySelectorAll(".unlike-post").forEach(button => {
+    button.onclick = unlike_post;
+  });
 });
 
 let postId = null;
 let postDiv = null;
+
 // toggling the form
 function toggle_create_form() {
   document.querySelector("#create-post-form").classList.toggle("d-block");
@@ -104,7 +113,29 @@ function alert(message, type = "primary") {
   }, 3000);
 }
 
-function takePostId(event) {
-  
-  return postId;
+// like/unlike a post
+const like_post = (event) => {
+  const postId_like = event.target.closest(".post").getAttribute("data-post-id");
+
+  // send a PUT req with postId to update likes db
+  fetch(`/like_post/${postId_like}`, {
+    method: "PUT",
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    alert(data.message, "success");
+
+
+    // TODO: update DOM
+    //update count
+    const likes = event.target.closest(".post").getAttribute("data-post-likes");
+    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) + 1;
+
+    document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
+    document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
+
+
+  })
 }
+// TODO: 
+const unlike_post = (event) => {}

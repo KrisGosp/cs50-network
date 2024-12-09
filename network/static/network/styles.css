@@ -18,3 +18,14 @@ a:hover {
   padding: 0.5em;
   border: 1.5px solid rgb(0, 56, 0);
 }
+
+/* Like/Unlike */
+.like-post, .unlike-post {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}

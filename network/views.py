@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 import json
 
-from .models import User, Post, Following
+from .models import User, Post, Following, Like
 
 
 def index(request):
@@ -172,3 +172,24 @@ def toggle_follow(request):
         return redirect('profile', user_id=user_id)
 
     return JsonResponse({'message': 'Route can only be accessed via POST'}, status=400)
+
+@login_required
+def like_post(request, post_id):
+    if request.method == "PUT":
+        # update post likes count
+        post = Post.objects.get(id=post_id)
+        post.likes += 1
+        post.save()
+
+        # create a new Like object
+        # TODO: Change Like to accept user.id and post.id
+        new_like = Like.objects.create(user=request.user, post=post)
+
+        return JsonResponse({'message': 'Post liked successfully'}, status=201)
+    return JsonResponse({'message': 'Route can only be accessed via PUT'}, status=400)
+
+@login_required
+def unlike_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    # post.likes.remove(request.user)
+    return redirect('index')
