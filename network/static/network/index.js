@@ -130,8 +130,12 @@ const like_post = (event) => {
     const likes = event.target.closest(".post").getAttribute("data-post-likes");
     event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) + 1;
 
+    // toggle the like/unlike icons
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
-    document.querySelector(`.liked-${postId_like}`).classList.toggle("d-none");
+    document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
+
+    // after liking, attach on click again
+    // document.querySelector(`.unlike-post-${postId_like}`).onclick = unlike_post;
   })
 }
 
@@ -149,9 +153,9 @@ const unlike_post = (event) => {
 
     //update count
     const likes = event.target.closest(".post").getAttribute("data-post-likes");
-    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes) - 1;
+    event.target.closest(".post").querySelector(".post-likes").innerHTML = parseInt(likes);
 
     document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
-    document.querySelector(`.unliked-${postId_like}`).classList.toggle("d-none");
+    document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
   })
 }
