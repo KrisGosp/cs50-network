@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 let postId = null;
 let postDiv = null;
 
-let isLikeCountChanged = false;
+let isLikeCountChanged = [];
 
 // toggling the form
 function toggle_create_form() {
@@ -130,7 +130,14 @@ const like_post = (event) => {
     
     //update count
     let likes = event.target.closest(".post").getAttribute("data-post-likes");
-    likes = !isLikeCountChanged ? parseInt(likes) + 1 : parseInt(likes);
+    // likes = !isLikeCountChanged ? parseInt(likes) + 1 : parseInt(likes);
+
+    if (isLikeCountChanged.includes(postId_like)) {
+      likes = parseInt(likes);
+    } else {
+      likes = parseInt(likes) + 1;
+    }
+
     console.log(likes, isLikeCountChanged);
     event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
     
@@ -139,7 +146,11 @@ const like_post = (event) => {
     document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
 
     // toggle isLikeCountChanged
-    isLikeCountChanged = !isLikeCountChanged;
+    if (isLikeCountChanged.includes(postId_like)) {
+      isLikeCountChanged = isLikeCountChanged.filter(id => id !== postId_like);
+    } else {
+      isLikeCountChanged.push(postId_like);
+    }
   })
 
 }
@@ -158,7 +169,14 @@ const unlike_post = (event) => {
 
     //update count
     let likes = event.target.closest(".post").getAttribute("data-post-likes");
-    likes = !isLikeCountChanged ? parseInt(likes) - 1 : parseInt(likes);
+    // likes = !isLikeCountChanged ? parseInt(likes) - 1 : parseInt(likes);
+
+    if (isLikeCountChanged.includes(postId_like)) {
+      likes = parseInt(likes);
+    } else {
+      likes = parseInt(likes) - 1;
+    }
+
     console.log(likes, isLikeCountChanged);
     event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
 
@@ -166,7 +184,11 @@ const unlike_post = (event) => {
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
     
     // toggle isLikeCountChanged
-    isLikeCountChanged = !isLikeCountChanged;
+    if (isLikeCountChanged.includes(postId_like)) {
+      isLikeCountChanged = isLikeCountChanged.filter(id => id !== postId_like);
+    } else {
+      isLikeCountChanged.push(postId_like);
+    }
   })
 
 }
