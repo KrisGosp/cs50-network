@@ -2,15 +2,16 @@
 {% load static %}
 {% block body %}
 <div class="container">
+
   <!-- Alert  -->
   <div class="alert alert-primary my-3 d-none" role="alert"></div>
 
   <h3>{{ user.username }}</h3>
 
-  <div class="f">Following: {{ following }}</div>
-  <div class="f">Followers: {{ followers }}</div>
+  <div>Following: {{ following }}</div>
+  <div>Followers: {{ followers }}</div>
 
-  <!-- if it is not own profile then show form to submit follow/unfollow -->
+  <!-- if NOT own profile => show form to submit follow/unfollow -->
   {% if not is_own_profile %}
     <form method="post" action="{% url 'toggle_follow' %}">
         {% csrf_token %}
@@ -21,31 +22,36 @@
             <button type="submit">Follow</button>
         {% endif %}
     </form>
-{% endif %}
-
-{% for post in page_obj %}
-<div class="post" data-post-id="{{ post.id }}">
-  <a href="{% url 'profile' post.user.id %}">
-    <p>{{ post.user }}</p>
-  </a>
-
-  <div class="new-body d-none">
-    <textarea name="new-body" id="new-body-{{ post.id }}">{{ post.body }}</textarea>
-  </div>
-  <p class="post-body post-body-{{ post.id }}">{{ post.body }}</p>
-  <div class="d-flex justify-content-between">
-    <span>Likes: {{ post.likes }}</span>
-    <span>{{ post.created_at }}</span>
-  </div>
-
-  {% if post.user == request.user %}
-  <button class="btn btn-sm btn-outline-primary edit-post">Edit</button>
-  <button class="btn btn-sm btn-outline-primary save-new-post d-none">Save</button>
   {% endif %}
-</div>
-{% endfor %}
+
+  {% for post in page_obj %}
+    <div class="post" data-post-id="{{ post.id }}">
+      <a href="{% url 'profile' post.user.id %}">
+        <p>{{ post.user }}</p>
+      </a>
+
+  <!-- Element for updated body -->
+      <div class="new-body d-none">
+        <textarea name="new-body" id="new-body-{{ post.id }}">{{ post.body }}</textarea>
+      </div>
+
+      <p class="post-body post-body-{{ post.id }}">{{ post.body }}</p>
+      <div class="d-flex justify-content-between">
+        <span>Likes: {{ post.likes }}</span>
+        <span>{{ post.created_at }}</span>
+      </div>
+
+      <!-- If post by currUser => show edit button -->
+      {% if post.user == request.user %}
+      <button class="btn btn-sm btn-outline-primary edit-post">Edit</button>
+      <button class="btn btn-sm btn-outline-primary save-new-post d-none">Save</button>
+      {% endif %}
+      
+    </div>
+  {% endfor %}
 </div>
 
+<!-- Page navigation -->
 <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     {% if page_obj.has_previous %}
@@ -81,7 +87,6 @@
     {% endif %}
   </ul>
 </nav>
-
 
 {% block script %}
 <script src="{% static 'network/index.js' %}"></script>

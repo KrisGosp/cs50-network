@@ -1,5 +1,6 @@
-// attach onclick and onsubmit to post form
+// attach onclick and onsubmit effects once DOM loaded
 document.addEventListener("DOMContentLoaded", function () {
+
   // if on the main page where the create post form is
   if (document.querySelector("#open-create-form") && document.querySelector("#create-form")) {
     document.querySelector("#open-create-form").onclick = toggle_create_form;
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // attach onclick to like/unlike buttons
+  // LIKE/UNLIKE
   document.querySelectorAll(".like-post").forEach(button => {
     button.onclick = like_post;
   });
@@ -25,10 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-let postId = null;
-let postDiv = null;
-
-let isLikeCountChanged = [];
 
 // toggling the form
 function toggle_create_form() {
@@ -57,7 +54,13 @@ function create_post() {
   return false;
 }
 
-// saving the edited post
+
+// vars for SAVE & EDIT
+let postId = null;
+let postDiv = null;
+
+
+// SAVE edited post
 function save_new_post() {
   body = document.querySelector(`#new-body-${postId}`).value;
   document.querySelector(`.post-body-${postId}`).innerHTML = body;
@@ -84,7 +87,7 @@ function save_new_post() {
   return false;
 }
 
-// editing a post
+// EDIT a post
 function edit_post(event) {
   if (postId === null) {
     // take the closest post div
@@ -115,8 +118,13 @@ function alert(message, type = "primary") {
   }, 3000);
 }
 
-// like/unlike a post
+
+// array to store IDs of posts that we interacted with already
+let isLikeCountChanged = [];
+
+// LIKE a post
 const like_post = (event) => {
+  // take postId from html
   const postId_like = event.target.closest(".post").getAttribute("data-post-id");
 
   // send a PUT req with postId to update likes db
@@ -125,20 +133,21 @@ const like_post = (event) => {
   })
   .then((res) => res.json())
   .then((data) => {
+
+    // TODO: maybe not alert on like?
     alert(data.message, "success");
     
-    
-    //update count
+    // get likes count from html
     let likes = event.target.closest(".post").getAttribute("data-post-likes");
-    // likes = !isLikeCountChanged ? parseInt(likes) + 1 : parseInt(likes);
 
+    // check if postId is in the array with changed posts
     if (isLikeCountChanged.includes(postId_like)) {
       likes = parseInt(likes);
     } else {
       likes = parseInt(likes) + 1;
     }
 
-    console.log(likes, isLikeCountChanged);
+    // update html to display updated count
     event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
     
     // toggle the like/unlike icons
@@ -153,10 +162,12 @@ const like_post = (event) => {
     }
   })
 
+  // TODO: return false?
 }
 
-
+// UNLIKE a post
 const unlike_post = (event) => {
+  // take postId from html
   const postId_like = event.target.closest(".post").getAttribute("data-post-id");
 
   // send a PUT req with postId to update likes db
@@ -165,21 +176,24 @@ const unlike_post = (event) => {
   })
   .then((res) => res.json())
   .then((data) => {
+    
+    // TODO: maybe not alert?
     alert(data.message, "success");
 
-    //update count
+    // get likes count from html
     let likes = event.target.closest(".post").getAttribute("data-post-likes");
-    // likes = !isLikeCountChanged ? parseInt(likes) - 1 : parseInt(likes);
 
+    // check if postId is in the array with changed posts
     if (isLikeCountChanged.includes(postId_like)) {
       likes = parseInt(likes);
     } else {
       likes = parseInt(likes) - 1;
     }
 
-    console.log(likes, isLikeCountChanged);
+    // update html to display updated count
     event.target.closest(".post").querySelector(".post-likes").innerHTML = likes;
 
+    // toggle the like/unlike icons
     document.querySelector(`.unlike-post-${postId_like}`).classList.toggle("d-none");
     document.querySelector(`.like-post-${postId_like}`).classList.toggle("d-none");
     
@@ -190,5 +204,5 @@ const unlike_post = (event) => {
       isLikeCountChanged.push(postId_like);
     }
   })
-
+    // TODO: return false?
 }

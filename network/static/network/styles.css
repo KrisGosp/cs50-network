@@ -1,9 +1,13 @@
 p {
   margin: 0;
 }
+
+/* Basic container for entire app */
 .container {
   width: 50%;
 }
+
+/* Link decoration */
 a {
   color: wheat;
 }
