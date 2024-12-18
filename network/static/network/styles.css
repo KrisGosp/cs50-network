@@ -9,11 +9,10 @@ p {
 
 /* Link decoration */
 a {
-  color: wheat;
+  color: rgb(24, 24, 24);
 }
 a:hover {
   text-decoration: none;
-  color: white;
 }
 
 /* Posts */
