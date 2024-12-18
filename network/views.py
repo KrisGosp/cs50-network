@@ -200,6 +200,6 @@ def unlike_post(request, post_id):
         # delete the Like object
         Like.objects.filter(user=request.user, post=post).delete()
 
-        return JsonResponse({'message': 'Post liked successfully'}, status=201)
+        return JsonResponse({'message': 'Post unliked successfully'}, status=201)
     return JsonResponse({'message': 'Route can only be accessed via PUT'}, status=400)
     
